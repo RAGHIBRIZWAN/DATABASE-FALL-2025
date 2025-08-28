@@ -1,0 +1,15 @@
+select count(*) as total_emp from EMPLOYEES;
+select count(*) as total_emp, manager_id from EMPLOYEES group by(manager_id);
+select distinct manager_id from employees;
+select manager_id from employees group by(manager_id);
+select sum(salary) from employees;
+select sum(salary)as salary, manager_id from employees group by(manager_id);
+select max(salary) as salary from employees;
+select max(salary) as salary, manager_id from employees group by (manager_id);
+select min(salary) as salary, manager_id from employees group by (manager_id);
+select min(salary) as salary from employees;
+select avg(salary) as salary from employees;
+select avg(salary) as salary, manager_id from employees group by (manager_id);
+select * from EMPLOYEES;
+select manager_id from employees where salary = (select max(salary) from employees);
+select first_name || ' ' || salary as concatenate from employees; 
