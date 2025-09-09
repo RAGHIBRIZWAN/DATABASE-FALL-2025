@@ -57,3 +57,35 @@ alter table employees add email varchar(20) unique;
 alter table employees add constraint unique_bonus unique(bonus);
 insert into employees (emp_id, full_name, salary, dept_id, bonus, age) values (2, 'Sara', 30000, 101, 2000, 25);
 insert into employees (emp_id, full_name, salary, dept_id, bonus, age) values (3, 'Raghib', 40000, 102, 2000, 20);
+
+-- Q12
+alter table employees add (dob DATE);
+alter table employees add constraint check_dob check (dob <= date '2007-01-01');
+
+-- Q13
+select * from employees;
+insert into employees (emp_id,full_name,dept_id,salary,bonus,city,dob) values (13,'Rabani',103,45000,2500,'Islamabad',TO_DATE('2020-01-01', 'YYYY-MM-DD'));
+
+-- Q14
+alter table employees drop CONSTRAINT fk_dept_id;
+insert into employees (emp_id, full_name, salary, dept_id, bonus, age, dob) values (5, 'Rizwan', 28000, 999, 4000, 22, '1998-05-05');
+alter table employees add CONSTRAINT fk_dept_id FOREIGN KEY (dept_id) REFERENCES departments(dept_id);
+
+-- Q15
+alter table employees drop column age;
+alter table employees drop column city;
+
+-- Q16
+select d.dept_id, d.dept_name,e.emp_id, e.full_name from departments d join employees e on d.dept_id = e.dept_id;
+
+-- Q17
+alter table employees rename column salary to monthly_salary;
+
+-- Q18
+select * from departments d where d.dept_id NOT IN(SELECT dept_id FROM employees e where d.dept_id = e.dept_id);
+
+-- Q19
+delete from students;
+
+-- Q20
+select dept_id,emp_count from (SELECT dept_id,count(*) as emp_count FROM employees group by (dept_id)order by emp_count desc) where rownum = 1 ;
