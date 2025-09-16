@@ -164,7 +164,7 @@ select distinct co.course_name from course co inner join student s on co.dept_id
 -- Q11
 select d.dept_name,SUM(s.fee_paid) from department d inner join student s on d.dept_id = s.dept_id group by d.dept_name having SUM(FEE_PAID) > 1000000;
 -- Q12
-select d.Dept_Name, count(f.Faculty_ID) as High_Salary_Faculty from Department d inner join Faculty f on d.Dept_ID = f.Dept_ID where f.Salary > 100000
+select d.Dept_Name from Department d inner join Faculty f on d.Dept_ID = f.Dept_ID where f.Salary > 100000
 group by d.Dept_Name having count(f.Faculty_ID) > 5;
 -- Q13
 select AVG(GPA) from student;
