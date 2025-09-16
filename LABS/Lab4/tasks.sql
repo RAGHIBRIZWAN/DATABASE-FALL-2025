@@ -79,6 +79,7 @@ INSERT INTO Course (Course_ID, Course_Name, Dept_ID) VALUES
 INSERT INTO Enrollment (Student_ID, Course_ID) VALUES (101, 201);
 INSERT INTO Enrollment (Student_ID, Course_ID) VALUES (101, 202);
 INSERT INTO Enrollment (Student_ID, Course_ID) VALUES (101, 206);
+INSERT INTO Enrollment (Student_ID, Course_ID) VALUES (101, 203);
 
 INSERT INTO Enrollment (Student_ID, Course_ID) VALUES (102, 201);
 INSERT INTO Enrollment (Student_ID, Course_ID) VALUES (102, 206);
@@ -139,8 +140,55 @@ select Student_Name,GPA from student where GPA > ANY(select GPA from student s i
 -- Q7
 select * from (select * from student ORDER BY GPA DESC) where ROWNUM <= 5;
 -- Q8
-select * from course co inner join student s on co.dept_id = s.dept_id where student_name = 'Ali';
+SELECT DISTINCT s.Student_ID, s.Student_Name
+FROM Student s
+WHERE s.Student_Name != 'Ali'
+  AND NOT EXISTS (
+    SELECT e1.Course_ID
+    FROM Enrollment e1
+    INNER JOIN Student s1 ON e1.Student_ID = s1.Student_ID
+    WHERE s1.Student_Name = 'Ali'
+    
+    MINUS
+    
+    SELECT e2.Course_ID
+    FROM Enrollment e2
+    WHERE e2.Student_ID = s.Student_ID
+  );
 -- Q9
 select d.dept_name,sum(s.fee_paid) as total_fees from department d inner join student s on d.Dept_ID = s.Dept_ID group by d.dept_name;
 -- Q10
 select distinct co.course_name from course co inner join student s on co.dept_id = s.dept_id where s.gpa>3.5;
+
+-- POST LAB
+-- Q11
+select d.dept_name,SUM(s.fee_paid) from department d inner join student s on d.dept_id = s.dept_id group by d.dept_name having SUM(FEE_PAID) > 1000000;
+-- Q12
+select d.Dept_Name, count(f.Faculty_ID) as High_Salary_Faculty from Department d inner join Faculty f on d.Dept_ID = f.Dept_ID where f.Salary > 100000
+group by d.Dept_Name having count(f.Faculty_ID) > 5;
+-- Q13
+select AVG(GPA) from student;
+delete from Student where GPA < ALL(select AVG(GPA) from Student);
+-- Q14
+DELETE FROM course WHERE course_id NOT IN (SELECT DISTINCT e.course_id FROM enrollment e WHERE e.course_id IS NOT NULL);
+-- Q15
+insert into HighFee_Students (Student_ID, Student_Name, Dept_ID, GPA, Fee_Paid) select Student_ID, Student_Name, Dept_ID, GPA, Fee_Paid 
+from Student where Fee_Paid > (select AVG(Fee_Paid) from Student);
+--Q16
+select * from faculty;
+insert into Retired_Faculty (Faculty_ID, Faculty_Name, Dept_ID, Salary, Joining_Date) select Faculty_ID, Faculty_Name, Dept_ID, Salary, Joining_Date
+from Faculty where Joining_Date < TO_DATE('2010,01,01','YYYY,MM,DD');
+-- Q17
+select dept_name from (select d.dept_name from department d inner join student s on d.dept_id = s.dept_id group by d.dept_name order by SUM(s.fee_paid) DESC) 
+where ROWNUM <= 1; 
+-- Q18
+select course_name from (select co.course_name from course co inner join enrollment e on co.COURSE_ID = e.COURSE_ID group by co.course_name
+order by count(e.student_id) desc) where ROWNUM <= 3;
+-- Q19
+select * from student;
+select * from enrollment;
+select s.student_name from student s inner join enrollment e on s.student_id = e.student_id group by s.student_name,s.gpa having count(e.course_id) > 3
+and s.gpa > (select AVG(GPA) from student);
+-- Q20
+insert into Unassigned_Faculty (Faculty_ID, Faculty_Name, Dept_ID, Salary, Joining_Date) select f.Faculty_ID, f.Faculty_Name, f.Dept_ID, f.Salary, f.Joining_Date
+from Faculty f where f.Faculty_ID NOT IN (select Faculty_ID from Course where Faculty_ID IS NOT NULL);
