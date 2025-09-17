@@ -123,15 +123,14 @@ select * from faculty;
 
 -- IN LAB
 -- Q1
-select d.Dept_Name, count(*) as number_of_studs from DEPARTMENT d inner join Student s on d.dept_id = s.dept_id group by d.DEPT_NAME;
+select d.dept_id,d.dept_name,(select count(*) from student s where s.dept_id = d.dept_id) as Student_Count from department d;
 -- Q2
 select d.dept_name from department d inner join student s on d.DEPT_ID = s.DEPT_ID group by d.dept_name HAVING AVG(s.GPA) >= 3.0;
 -- Q3
 select co.Course_Name,AVG(s.Fee_Paid) as avg_fees from Course co inner join enrollment e on co.course_id = e.course_id
 inner join Student s ON e.Student_ID = s.Student_ID group by co.COURSE_NAME;
 -- Q4
-select d.dept_name,count(f.faculty_id) as number_of_faculty_members from faculty f inner join department d on f.dept_id = d.dept_id 
-group by d.dept_name;
+select d.Dept_id,d.Dept_name,(select count(*) from faculty s where s.dept_id = d.dept_id) as Student_Count from department d;
 -- Q5
 select faculty_name from faculty where salary > (select AVG(salary) from faculty);
 -- Q6
@@ -154,9 +153,9 @@ WHERE s.Student_Name != 'Ali'
     SELECT e2.Course_ID
     FROM Enrollment e2
     WHERE e2.Student_ID = s.Student_ID
-  );
+  ); -- Can't Understand it. So done it by ChatGPT.
 -- Q9
-select d.dept_name,sum(s.fee_paid) as total_fees from department d inner join student s on d.Dept_ID = s.Dept_ID group by d.dept_name;
+select d.Dept_name,(select SUM(s.FEE_PAID) from student s where s.Dept_id = d.Dept_id) from Department;
 -- Q10
 select distinct co.course_name from course co inner join student s on co.dept_id = s.dept_id where s.gpa>3.5;
 
