@@ -53,9 +53,9 @@ CREATE TABLE fees(
     total_fee NUMBER
 );
 
-INSERT INTO fees VALUES (1,'Ahsan',10000,30000);
+INSERT INTO fees VALUES (1,'Daniyal',10000,30000);
 INSERT INTO fees VALUES (2,'Babar',15000,30000);
-INSERT INTO fees VALUES (3,'Dawood',5000,30000);
+INSERT INTO fees VALUES (3,'Raghib',5000,30000);
 COMMIT;
 
 UPDATE fees SET amount_paid = amount_paid + 5000 WHERE student_id = 1;
@@ -97,10 +97,10 @@ CREATE TABLE employees(
 );
 
 INSERT INTO employees VALUES (1, 'Ali', 50000);
-INSERT INTO employees VALUES (2, 'Bilal', 60000);
-INSERT INTO employees VALUES (3, 'Catherine', 55000);
-INSERT INTO employees VALUES (4, 'Daniyal', 45000);
-INSERT INTO employees VALUES (5, 'Eman', 70000);
+INSERT INTO employees VALUES (2, 'Talha', 60000);
+INSERT INTO employees VALUES (3, 'Rahman', 55000);
+INSERT INTO employees VALUES (4, 'Sara', 45000);
+INSERT INTO employees VALUES (5, 'Raghib', 70000);
 COMMIT;
 
 UPDATE employees SET salary = salary + 5000 WHERE emp_id = 1;
